@@ -1,53 +1,64 @@
 #student result tarcking system
-student_list = []
-def add_student():
-    name = input("Enter a name:")
-    roll_no = int(input("Enter a roll number:"))
-    subjects = ['Science','history','geography','maths']
-    mark = {}
-    for subject in subjects:
-        marks = float(input("Enter a marks:"))
-        mark[subjects]= marks
-        average = sum(marks.values()/len(marks))
-        passed = marks >= 40
-        student_record = {
-            'name':name,
-            'roll_no':roll_no,
-            'mark':mark,
-            'average':average,
-            'passed':passed
-        }
-        student_list.append(student_record)
-        def display_students():
-            if not student_list:
-                print("No student found!")
-                return
-            for student in student_list:
-                print("\n---Student Report---")
-                print(f"Name:{student['name']}")
-                print(f"Roll_no:{student['roll_no']}")
-                print(f"Marks:")
-                for subject,mark in student['mark'].items():
-                    print(f"{subject}:{mark}")
-                    print(f"Average:{student['average']:.2f}")
-                    print(f"Result:{'passed'if student['passed'] else 'Failed'}")
-                    def main():
-                        while True:
-                            print("\n--Student Grade Tracker Menu---")
-                            print("1.Add Student")
-                            print("2.Display Students")
-                            print("3.Exit")
-                            choice = input("Enter your choice:")
-                            if choice == "1":
-                                add_student()
-                            elif choice == "2":
-                                display_students
-                            elif choice == "3":
-                                print("Thank you for using the student grade tracker!")
-                                break
-                            else:
-                                print("Invalid choice please try again later")
+# STUDENT-GRADE-TRACKER
+# Simple Student Grade Tracker
 
-                                main()
+def calculate_grade(avg):
+    if avg >= 90:
+        return "A+"
+    elif avg >= 80:
+        return "A"
+    elif avg >= 70:
+        return "B"
+    elif avg >= 60:
+        return "C"
+    elif avg >= 50:
+        return "D"
+    else:
+        return "F"
+
+students = {}
+
+while True:
+    print("\n--- Student Grade Tracker ---")
+    print("1. Add Student")
+    print("2. View All Students")
+    print("3. Exit")
+    choice = input("Enter your choice: ")
+
+    if choice == "1":
+        name = input("Enter student name: ")
+        subjects = int(input("How many subjects? "))
+        marks = []
+
+        for i in range(subjects):
+            while True:
+                mark = float(input(f"Enter marks for subject {i+1} (0-100): "))
+                if 0 <= mark <= 100:
+                    marks.append(mark)
+                    break
+                else:
+                    print("Marks should be between 0 and 100. Please try again.")
+
+        avg = sum(marks) / subjects
+        grade = calculate_grade(avg)
+        students[name] = {"Marks": marks, "Average": avg, "Grade": grade}
+        print(f"{name}'s data saved! ✅")
+
+    elif choice == "2":
+        if not students:
+            print("No student data available yet.")
+        else:
+            for student, info in students.items():
+                print(f"\nName: {student}")
+                print(f"Marks: {', '.join(map(str, info['Marks']))}")
+                print(f"Average: {info['Average']:.2f}")
+                print(f"Grade: {info['Grade']}")
+
+    elif choice == "3":
+        print("Exiting Grade Tracker. Goodbye!")
+        break
+
+    else:
+        print("Invalid choice, try again.")
 
 
